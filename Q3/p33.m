@@ -21,23 +21,25 @@ K = length(train(1,:));
 N = length(train(:,1));
 
 %% Decision Variables
-...
-
+x = sdpvar(1, K);
+rate_of_return = x * test';
 %% Objective
-obj = ...
+obj = mean(min(a1 * rate_of_return + b1, a2 * rate_of_return + b2));
+obj = -obj;
 
 %% Constraints
-con = [];
-...
+con = [sum(x) == 1];
 
 %% Optimization Settings
-ops = sdpsettings('solver','Gurobi','verbose',0);
-diag = optimize(con,...,ops);
+ops = sdpsettings('solver', 'Gurobi', 'verbose', 0, 'showprogress', 1);
+diag = optimize(con, obj, ops);
 
 %% Retrieve portfolio weights 
-... = value(...);
+x = value(x);
+x
+-value(obj)
     
 %% Evaluate portfolio
-y_test = mean(...);
-
+% y_test = mean(...);
+y_test = 0;
 end
