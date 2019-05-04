@@ -13,7 +13,7 @@ Q = [2/5, 3/5];
 loc_s = [1; 2; 3];
 loc_d = [1; 2];
 %% Compute cost function
-dist = pdist2(loc_s, loc_d, 'euclidean');
+dist = pdist2(loc_s, loc_d, 'squaredeuclidean');
 
 %% Optimization problem
 % decision variables

@@ -8,8 +8,8 @@ clc
 close all
 
 %% Read images
-X = imread('spring.jpg'); %Source image
-Y = imread('fall.jpg'); %Target image
+X = imread('fish.jpg'); %Source image
+Y = imread('view.jpg'); %Target image
 figure()
 subplot(1, 2, 1), imshow(X);
 title('Source Image')
@@ -79,10 +79,4 @@ figure, imshow(X_new , [])
 title('Re-colored Image')
 
 %% bonus
-Y_new_ss = N * ot_map' * X_ss;
-B = pinv(Y_ss) * Y_new_ss;
-Y_new_ = Y_ * B;
-Y_new = reshape(Y_new_, w2, h2, 3);
-
-figure, imshow(Y_new , [])
-title('bonus')
+Y_new_ss = N * ot_map' * X_ss
