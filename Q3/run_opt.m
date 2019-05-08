@@ -1,0 +1,1 @@
+[y_test, y_train, diag] = p33(test,test);

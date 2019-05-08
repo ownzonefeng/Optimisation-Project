@@ -11,7 +11,7 @@
 % Run this function with the matlab variable 'test' obtained by loading
 % the file test.mat 
 % Fill in the sections marked by '...'
-function [y_test, y_train] = p33(train,test)
+function [y_test, y_train, diag] = p33(train,test)
 %% Utility function
 a1 = 4; b1 = 0;
 a2 = 1; b2 = 0;
@@ -22,24 +22,23 @@ N = length(train(:,1));
 
 %% Decision Variables
 x = sdpvar(1, K);
-rate_of_return = x * test';
+rate_of_return = x * train';
 %% Objective
 obj = mean(min(a1 * rate_of_return + b1, a2 * rate_of_return + b2));
 obj = -obj;
 
 %% Constraints
-con = [sum(x) == 1];
+con = [sum(x) == 1, x >= 0];
 
 %% Optimization Settings
 ops = sdpsettings('solver', 'Gurobi', 'verbose', 0, 'showprogress', 1);
 diag = optimize(con, obj, ops);
 
 %% Retrieve portfolio weights 
-x = value(x);
-x
--value(obj)
+x_opt = value(x);
     
 %% Evaluate portfolio
-% y_test = mean(...);
-y_test = 0;
+rate_of_return_test = x_opt * test';
+y_test = mean(min(a1 * rate_of_return_test + b1, a2 * rate_of_return_test + b2));
+y_train = -value(obj);
 end
