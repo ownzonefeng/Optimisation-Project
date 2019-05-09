@@ -14,22 +14,33 @@ rng(0);
 % testing set
 load test
 % training set
-N = ...;           % number of independent training datasets
+N = 1000;           % number of independent training datasets
 N_train = 30;       % number of training samples in each set
 
 %% Declare results and set Wasserstein radius
 saa = zeros(N,1);
 dro = zeros(N,1);
-rho = ...;          % Wasserstein radius
+rho = 0.9;          % Wasserstein radius
 %% Compute optimal utility when knowing all testing samples
-pi = ...;
+pi = 0.5712;
 %% Loop over all training datasets
-for n = 1:N
+try 
+   delete(gcp('nocreate'));
+   pool = parpool;
+   parfor n = 1:N                       % accelerate by Parallel Computing Toolbox
     train = sample_data(N_train);       % draw a new training dataset
-    saa(n) = ...;
-    dro(n) = ...;
+    saa(n) = p33(train, test);
+    dro(n) = p34(train, test, rho);
+   end
+catch
+   for n = 1:N
+    train = sample_data(N_train);       % draw a new training dataset
+    saa(n) = p33(train, test);
+    dro(n) = p34(train, test, rho);
     fprintf('Progress %0.2f\n',n/N)
+   end
 end
+
 %% Save results
 save results
 
@@ -55,7 +66,7 @@ ylabel('Probability')
 legend('Location','northwest')
 
 % Save the figure under the name 'fname'
-fname = ...;
+fname = "p35.png";
 saveas(gcf, fname);
 
 hold off
