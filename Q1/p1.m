@@ -29,4 +29,4 @@ ops = sdpsettings('solver','gurobi','verbose',0);
 diag = optimize(con, obj, ops)
 
 % read optimal objective
-wass_dist = value(obj); 
+wass_dist = sqrt(value(obj)); 
